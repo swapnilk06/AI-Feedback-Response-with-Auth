@@ -89,13 +89,11 @@ AI-Feedback-Response-with-Auth/
 #### Deployment Process
 
 - 1] Check port added in **backend/index.js**
-
   ```js
   const port = process.env.PORT || 4000;
   ```
 
 - 2] Deploy backend
-
   - Web Services -> New Web Service -> Build and deploy from a Git repo
   - Root Directory - backend
   - Build cmd - `npm install`
@@ -103,23 +101,62 @@ AI-Feedback-Response-with-Auth/
   - Add Env. variables of backend
 
 - 3] Copy backend url after live that.
-
   - Replace localhost url with render live link in --> frontend/.env
 
   ```bash
-  https://ai-feedback-response-with-auth-<_>.onrender.com
+  https://ai-feedback-response-with-auth-backend.onrender.com
   ```
 
-- 4] Deploy frontend
+- 4] Update code in backend/utils/`mongodb.js`
+  ```js
+  import mongoose from "mongoose";
+  import dotenv from "dotenv";
+  dotenv.config();
 
-  - Web Services -> Static Site -> Build and deploy from a Git repo
+  const db = async () => {
+    try {
+      const conn = await mongoose.connect(process.env.MONGODB_URL);
+      console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+      console.error("MongoDB Connection Error:", error.message);
+      process.exit(1);
+    }
+  };
+
+  export default db;
+  ```
+
+  - Update code in backend/`index.js`
+  ```js
+  const allowedOrigins = [
+    "http://localhost:5173",
+    "https://ai-feedback-response-with-auth-frontend.onrender.com",
+  ];
+  ```
+
+- 5] MongoDB Atlas IP Whitelist
+  - Network Access -> Add IP Address -> `0.0.0.0/0`
+
+- 6] Deploy frontend
+  - Web Services -> Static Site -> Build and deploy from a git repo
   - Root Directory - frontend
   - Build cmd - `npm install; npm run build`
   - Publish Directory - `./dist`
   - Add Env. variables of frontend
 
-- 5] Add Redirects/Rewrites in frontend
+- 7] Add Redirects/Rewrites in frontend
   - frontend
     - Source => `/*`
     - Destination => `/index.html`
     - Action => `Rewrite`
+
+- 8] Update code in backend/`auth.controller.js`
+  ```js
+  // set token in cookie
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+  ```
