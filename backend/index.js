@@ -20,16 +20,7 @@ const allowedOrigins = [
 // Middleware
 app.use(express.json()); // all the request will pass using json
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
-      return callback(new Error("Not allowed by CORS"));
-    },
-    credentials: true,
-  })
-); // will send the cookies in the response
+app.use(cors({ origin: allowedOrigins, credentials: true })); // will send the cookies in the response
 // origin writing for frontend connection with backend
 
 // API Endpoints (Routes)
