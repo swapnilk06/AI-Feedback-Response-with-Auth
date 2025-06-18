@@ -1,4 +1,5 @@
 # AI Feedback Response with Authentication System (Email Verification, Reset Password working concept)
+
 AI-generated feedback responses are created when a customer fills out the feedback form, but only after the user has authenticated or created an account.
 
 #### File/Folder Structure
@@ -85,19 +86,40 @@ AI-Feedback-Response-with-Auth/
 
 <br>
 
-
 #### Deployment Process
 
 - 1] Check port added in **backend/index.js**
+
   ```js
   const port = process.env.PORT || 4000;
   ```
 
-- 2] `Render` for backend deploy
+- 2] Deploy backend
+
   - Web Services -> New Web Service -> Build and deploy from a Git repo
+  - Root Directory - backend
   - Build cmd - `npm install`
   - Start cmd - `node index.js`
-  - Add Env. variables
-  
+  - Add Env. variables of backend
+
 - 3] Copy backend url after live that.
-  - Replace localhost url frontend/src/Context/
+
+  - Replace localhost url with render live link in --> frontend/.env
+
+  ```bash
+  https://ai-feedback-response-with-auth-<_>.onrender.com
+  ```
+
+- 4] Deploy frontend
+
+  - Web Services -> Static Site -> Build and deploy from a Git repo
+  - Root Directory - frontend
+  - Build cmd - `npm install; npm run build`
+  - Publish Directory - `./dist`
+  - Add Env. variables of frontend
+
+- 5] Add Redirects/Rewrites in frontend
+  - frontend
+    - Source => `/*`
+    - Destination => `/index.html`
+    - Action => `Rewrite`
