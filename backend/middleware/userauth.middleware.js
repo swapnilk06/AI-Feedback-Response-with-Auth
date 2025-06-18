@@ -24,7 +24,8 @@ const userAuth = async (req, res, next) => {
 
     next(); // 4th next fun execute our controller fun "sendVerifyOtp" -> userId that is added in middleware userauth
   } catch (error) {
-    return res.json({ success: false, message: error.message });
+    console.error("Auth error:", error);
+    return res.status(401).json({ success: false, message: "Unauthorized" });
   }
 };
 

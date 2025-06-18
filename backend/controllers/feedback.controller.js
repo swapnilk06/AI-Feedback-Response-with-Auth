@@ -73,6 +73,7 @@ export const saveAdminResponse = async (req, res) => {
 
     res.json({ success: true, message: "Admin response saved", feedback });
   } catch (err) {
+    console.error("Admin response error:", err);
     res
       .status(500)
       .json({ success: false, message: "Failed to save admin response" });
