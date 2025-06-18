@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect, createContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+
 export const AppContent = createContext();
 
+// send the cookies
 export const AppContextProvider = (props) => {
-  // send the cookies
   axios.defaults.withCredentials = true;
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -16,7 +17,7 @@ export const AppContextProvider = (props) => {
       const { data } = await axios.get(backendUrl + "/api/auth/is-auth");
       if (data.success) {
         setIsLoggedin(true);
-        localStorage.setItem("auth", "true"); // ✅ Save flag for refresh
+        localStorage.setItem("auth", "true"); // Save flag for refresh
         getUserData();
       }
     } catch (error) {
@@ -24,10 +25,10 @@ export const AppContextProvider = (props) => {
       localStorage.removeItem("auth");
     }
   };
+
   const getUserData = async () => {
     try {
       const { data } = await axios.get(backendUrl + "/api/user/data");
-
       if (data.success) {
         setUserData(data.userData);
       } else {
@@ -41,7 +42,7 @@ export const AppContextProvider = (props) => {
     } catch (error) {
       const alreadyLoggedIn = localStorage.getItem("auth");
       if (alreadyLoggedIn) {
-        toast.error(error.response?.data?.message || "User not found");
+        toast.error(error.response?.data?.message || "Auth check failed");
         localStorage.removeItem("auth");
       }
       setIsLoggedin(false);
@@ -51,6 +52,7 @@ export const AppContextProvider = (props) => {
   useEffect(() => {
     getAuthState();
   }, []);
+
   const value = {
     backendUrl,
     isLoggedin,
@@ -59,6 +61,7 @@ export const AppContextProvider = (props) => {
     setUserData,
     getUserData,
   };
+
   return (
     <AppContent.Provider value={value}>{props.children}</AppContent.Provider>
   );

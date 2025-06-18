@@ -29,16 +29,21 @@ const Navbar = () => {
     }
   };
   console.log("UserData:", userData);
+
   // logout function
   const logout = async () => {
     try {
       axios.defaults.withCredentials = true;
       const { data } = await axios.post(backendUrl + "/api/auth/logout");
-      data.success && setIsLoggedin(false);
-      data.success && setUserData(false);
-      navigate("/");
+      if (data.success) {
+        setIsLoggedin(false);
+        setUserData(false);
+        localStorage.removeItem("auth");
+        toast.success("Logged out successfully");
+        navigate("/");
+      }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message || "Logout failed");
     }
   };
 
