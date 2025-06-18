@@ -22,10 +22,7 @@ export const register = async (req, res) => {
     const existingUser = await userModel.findOne({ email });
 
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User already exists" });
-      // no user with email id then stroed into hash password
+      return res.json({ success: false, message: "User already exists" }); // no user with email id then stroed into hash password
     }
 
     // 2] encrypt the password using bcrypt
@@ -44,8 +41,8 @@ export const register = async (req, res) => {
     // using the cookie we will send token
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true, // always true in production
-      sameSite: "None", // required for cross-origin
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -53,8 +50,8 @@ export const register = async (req, res) => {
     const mailOptions = {
       from: process.env.SENDER_EMAIL,
       to: email,
-      subject: "AI Feedback Response System",
-      text: `Welcome Our platform helps you gather meaningful insights from your thoughts. Your account has been created with email id: ${email}`,
+      subject: "Welcome to Authentication System",
+      text: `Welcome Auth base website. Your account has been created with email id: ${email}`,
     };
 
     await transporter.sendMail(mailOptions);
@@ -101,8 +98,8 @@ export const login = async (req, res) => {
     // set token in cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true, // always true in production
-      sameSite: "None", // required for cross-origin
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -118,8 +115,8 @@ export const logout = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: true, // always true in production
-      sameSite: "None", // required for cross-origin
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
     });
 
     return res.json({ success: true, message: "Logged Out" });

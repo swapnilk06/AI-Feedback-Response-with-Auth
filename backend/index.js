@@ -13,10 +13,8 @@ const app = express();
 const port = process.env.PORT || 4000; // app running port
 db(); // mongoDB connection
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://ai-feedback-response-with-auth-frontend.onrender.com",
-];
+const allowedOrigins = ["http://localhost:5173"];
+
 // Middleware
 app.use(express.json()); // all the request will pass using json
 app.use(cookieParser());
