@@ -25,17 +25,16 @@ const Header = () => {
       />
 
       <h1 className="flex items-center gap-2 text-xl sm:text-3xl font-medium mb-2">
-        Hey <img className="w-8 aspect-square" src={assets.hand_wave} alt="" />{" "}
-        {userData ? userData.name : "Developer"}!
+        Hello <img className="w-8 aspect-square" src={assets.hand_wave} alt="" />{" "}
+        {userData ? userData.name : "Share.Feedback.Improve."}
       </h1>
 
       <h2 className="text-3xl sm:text-5xl font-semibold mb-4">
-        Welcome in Auth base sytem
+        AI Feedback Response System
       </h2>
 
       <p className="mb-8 max-w-md">
-        "Our authentication system offers secure and seamless access with
-        ensuring user data stays protected.
+        "Our platform helps you gather meaningful insights from your thoughts. Once you create an account or log in, you can easily submit your feedback using our simple form."
       </p>
 
       <button
