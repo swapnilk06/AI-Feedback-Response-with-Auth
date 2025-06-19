@@ -42,7 +42,7 @@ export const AppContextProvider = (props) => {
     } catch (error) {
       const alreadyLoggedIn = localStorage.getItem("auth");
       if (alreadyLoggedIn) {
-        toast.error(error.response?.data?.message || "Auth check failed");
+        toast.error(error.response?.data?.message || "User not found");
         localStorage.removeItem("auth");
       }
       setIsLoggedin(false);
@@ -51,10 +51,8 @@ export const AppContextProvider = (props) => {
 
   useEffect(() => {
     getAuthState();
-    console.log("IsLoggedin:", isLoggedin);
-    console.log("UserData:", userData);
-  }, [isLoggedin, userData]);
-
+  }, []);
+  
   const value = {
     backendUrl,
     isLoggedin,
@@ -63,7 +61,6 @@ export const AppContextProvider = (props) => {
     setUserData,
     getUserData,
   };
-
   return (
     <AppContent.Provider value={value}>{props.children}</AppContent.Provider>
   );
