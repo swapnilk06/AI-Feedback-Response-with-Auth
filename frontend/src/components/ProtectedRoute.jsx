@@ -4,7 +4,7 @@ import { AppContent } from "../context/AppContext";
 import { toast } from "react-toastify";
 
 const ProtectedRoute = ({ children }) => {
-  const { isLoggedin, loadingAuthCheck } = useContext(AppContent);
+  const { isLoggedin, loadingAuthCheck, userData } = useContext(AppContent);
   const notified = useRef(false);
 
   if (loadingAuthCheck) {
