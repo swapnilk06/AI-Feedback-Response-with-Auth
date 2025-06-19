@@ -23,14 +23,13 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const onSubmitHandler = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-
       // With API request (backendUrl) send cookies
       axios.defaults.withCredentials = true;
 
       if (state === "Sign Up") {
-        const { data } = await axios.post(backendUrl + "/api/auth/register", {
+        const { data } = await axios.post(`${backendUrl}/api/auth/register`, {
           name,
           email,
           password,
@@ -44,24 +43,30 @@ const Login = () => {
           toast.error(data.message);
         }
       } else {
-        const { data } = await axios.post(backendUrl + "/api/auth/login", {
+        const { data } = await axios.postpost(`${backendUrl}/api/auth/login`, {
           email,
           password,
         });
 
         if (data.success) {
           setIsLoggedin(true);
+          toast.success(data.message);
+
+          // Wait for userData to be fetched and then redirect
           await getUserData();
-          navigate("/");
+
+          setTimeout(() => {
+            navigate("/");
+          }, 500); // give React time to re-render AppContext
         } else {
-          toast.error(data.message);
+          toast.error(data.message || "Something went wrong");
         }
       }
     } catch (error) {
-      // toast.error(error?.response?.data?.message || "Something went wrong");
-      toast.error(error.message);
+      toast.error(error?.response?.data?.message || "Login/Register failed");
     }
   };
+
   return (
     <div className="flex items-center justify-center min-h-screen px-6 sm:px-0 bg-gradient-to-br from-yellow-200 to-purple-400">
       <img

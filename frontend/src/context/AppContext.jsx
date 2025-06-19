@@ -51,7 +51,9 @@ export const AppContextProvider = (props) => {
 
   useEffect(() => {
     getAuthState();
-  }, []);
+    console.log("IsLoggedin:", isLoggedin);
+    console.log("UserData:", userData);
+  }, [isLoggedin, userData]);
 
   const value = {
     backendUrl,
