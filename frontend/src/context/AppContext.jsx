@@ -19,7 +19,7 @@ export const AppContextProvider = (props) => {
       if (data.success) {
         setIsLoggedin(true);
         localStorage.setItem("auth", "true"); // Save flag for refresh
-        getUserData();
+        await getUserData();
       } else {
         setIsLoggedin(false);
         setUserData(null);
@@ -36,7 +36,10 @@ export const AppContextProvider = (props) => {
 
   const getUserData = async () => {
     try {
-      const { data } = await axios.get(`${backendUrl}/api/user/data`);
+      const { data } = await axios.get(`${backendUrl}/api/user/data`, {
+        withCredentials: true,
+      });
+
       if (data.success) {
         setUserData(data.userData);
       } else {
@@ -45,15 +48,17 @@ export const AppContextProvider = (props) => {
           toast.error(data.message || "User not found");
         }
         setIsLoggedin(false);
+        setUserData(null);
         localStorage.removeItem("auth");
       }
     } catch (error) {
       const alreadyLoggedIn = localStorage.getItem("auth");
       if (alreadyLoggedIn) {
-        localStorage.removeItem("auth");
         toast.error(error.response?.data?.message || "Failed to get user data");
       }
       setIsLoggedin(false);
+      setUserData(null);
+      localStorage.removeItem("auth");
     }
   };
 
@@ -68,6 +73,7 @@ export const AppContextProvider = (props) => {
     userData,
     setUserData,
     getUserData,
+    loadingAuthCheck,
   };
   return (
     <AppContent.Provider value={value}>{props.children}</AppContent.Provider>
