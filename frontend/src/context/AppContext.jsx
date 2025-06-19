@@ -10,7 +10,7 @@ export const AppContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   const [isLoggedin, setIsLoggedin] = useState(false);
-  const [userData, setUserData] = useState(true);
+  const [userData, setUserData] = useState(false);
   const [loadingAuthCheck, setLoadingAuthCheck] = useState(true);
 
   const getAuthState = async () => {
@@ -22,12 +22,12 @@ export const AppContextProvider = (props) => {
         await getUserData();
       } else {
         setIsLoggedin(false);
-        setUserData(null);
+        setUserData(false);
         localStorage.removeItem("auth");
       }
     } catch (error) {
       setIsLoggedin(false);
-      setUserData(null);
+      setUserData(false);
       localStorage.removeItem("auth");
     } finally {
       setLoadingAuthCheck(false);
@@ -48,7 +48,7 @@ export const AppContextProvider = (props) => {
           toast.error(data.message || "User not found");
         }
         setIsLoggedin(false);
-        setUserData(null);
+        setUserData(false);
         localStorage.removeItem("auth");
       }
     } catch (error) {
@@ -57,7 +57,7 @@ export const AppContextProvider = (props) => {
         toast.error(error.response?.data?.message || "Failed to get user data");
       }
       setIsLoggedin(false);
-      setUserData(null);
+      setUserData(false);
       localStorage.removeItem("auth");
     }
   };
