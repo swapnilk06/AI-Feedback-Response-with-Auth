@@ -9,7 +9,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { userData, backendUrl, setUserData, setIsLoggedin } =
     useContext(AppContent);
-
+    
   // send OTP for email verification
   const sendVerificationOtp = async () => {
     try {
