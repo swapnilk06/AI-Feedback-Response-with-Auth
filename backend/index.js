@@ -25,12 +25,7 @@ const allowedOrigins = [
   process.env.FRONTEND_URL, // Production
 ];
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true,
-  })
-); // will send the cookies in the response
+app.use(cors({ origin: allowedOrigins, credentials: true })); // will send the cookies in the response
 // origin writing for frontend connection with backend
 
 // Check backend API working
