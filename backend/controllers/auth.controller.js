@@ -57,7 +57,7 @@ export const register = async (req, res) => {
     await transporter.sendMail(mailOptions);
 
     // after sending the email get response success => true
-    res.status(200).json({ success: true });
+    return res.json({ success: true });
 
     // try to create user account & store the data in the database after reached to name, email, password
   } catch (error) {
@@ -103,7 +103,7 @@ export const login = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    return res.status(200).json({ success: true });
+    return res.json({ success: true });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -202,7 +202,7 @@ export const verifyEmail = async (req, res) => {
 // 11] Check if user is authenticated
 export const isAuthenticated = async (req, res) => {
   try {
-    return res.status(200).json({ success: true });
+    return res.json({ success: true });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }

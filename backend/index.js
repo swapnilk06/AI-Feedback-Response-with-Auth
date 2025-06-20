@@ -11,33 +11,21 @@ import adminRouter from "./routes/admin.routes.js";
 
 const app = express();
 const port = process.env.PORT || 4000; // app running port
+db(); // mongoDB connection
 
-// DB Connect
-db();
+const allowedOrigins = ["http://localhost:5173"];
 
 // Middleware
 app.use(express.json()); // all the request will pass using json
 app.use(cookieParser());
-
-// CORS Setup: Dynamic for local + production
-const allowedOrigins = [
-  "http://localhost:5173", // Dev
-  process.env.FRONTEND_URL, // Production
-];
-
 app.use(cors({ origin: allowedOrigins, credentials: true })); // will send the cookies in the response
 // origin writing for frontend connection with backend
 
-// Check backend API working
-app.get("/", (req, res) => res.send("API Working Successfully"));
-
 // API Endpoints (Routes)
+app.get("/", (req, res) => res.send("API Working Successfully")); // visible msg
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/feedback", feedbackRouter);
 app.use("/api/admin", adminRouter);
 
-// Start Server
-app.listen(port, () => {
-  console.log(`Server running on port: ${port}`);
-}); // after start backend show that message
+app.listen(port, () => console.log(`Server start on port: ${port}`)); // after start backend show that message
